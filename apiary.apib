@@ -1,0 +1,259 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# Blog
+
+A simple API to create blog posts and comments
+
+# Blog API Root [/]
+
+This resource does not have any attributes. Instead it offers the initial API affordances in the form of the links in the JSON body.
+
+It is recommend to follow the “url” link values, [Link](https://tools.ietf.org/html/rfc5988) or Location headers where applicable to retrieve resources. Instead of constructing your own URLs, to keep your client decoupled from implementation details.
+
+## Retrieve the Entry Point [GET]
+
++ Response 200 (application/hal+json)
+
+        {
+            "_links": {
+                "blogs": { "href": "/blogs" }
+            }
+        }
+
+
+## Group Blog
+
+Resources related to a blog in the API
+
+## Blog Collection [/blogs/{?page}]
+
++ Parameters
+    + page: 1 (optional, number) - The page of blogs to return
+
+### List All Blogs [GET]
+
++ Response 200 (application/hal+json)
+
+        {
+            "_embedded": {
+                "blog": [
+                    {
+                        "data": {
+                            "id": 1,
+                            "title": "First Post!",
+                            "text": "Hello Internet",
+                            "images": [],
+                            "published_at": "2019-01-01 00:00:00",
+                            "publish": true,
+                        },
+                        "_links": {
+                            "self": { "self": "/v1/blogs/1" }
+                        },
+                    },
+                    {
+                        "data": {   
+                            "id": 2,
+                            "title": "Another Post!",
+                            "text": "And then something else happened",
+                            "images": [],
+                            "published_at": "2019-01-01 00:00:00",
+                            "publish": true,
+                        },
+                        "_links": {
+                            "self": { "self": "/v1/blogs/2" }
+                        },
+                    },
+                ]
+            },
+             "_links": {
+                "self": { "href": "/v1/blogs/" },
+                "next": { "href": "/v1/blogs/?page=2" }
+            },
+        ]
+
+### Create a New Blog [POST]
+
+You may create your own blog using this action. It takes a JSON
+object containing a post.
+
++ Request (application/json)
+
+        {
+            "data": {   
+                "title": "A Post!",
+                "text": "Though my problems are meaningless, that don't make them go away",
+                "images": [],
+                "published_at": "2019-01-01 00:00:00",
+                "publish": true,
+            }
+        }
+
++ Response 201 (application/hal+json)
+
+    + Headers
+
+            Location: /v1/blogs/3
+
+    + Body
+
+            {
+                "data": {   
+                    "id": 3,
+                    "title": "A Post!",
+                    "text": "Though my problems are meaningless, that don't make them go away",
+                    "images": [],
+                    "published_at": "2019-01-01 00:00:00",
+                    "publish": true,
+                },
+                "_links": {
+                    "self": { "href": "/v1/blogs/3" }
+                },
+            }
+
+## Blog [/blog/{blog_id}]
+
+A Blog object has the following attributes:
+
++ id 
++ title
++ text - article contents of the blog
++ images - An array of image urls
++ published_at - An ISO8601 date when the blog was published.
++ publish - whether this article has been published 
+
++ Parameters
+    + blog_id: 1 (required, number) - ID of the Blog in the form of an integer
+
+### Get a blog [GET]
+
++ Response 200 (application/hal+json)
+
+        {
+            "data": {   
+                "id": 3,
+                "title": "A Post!",
+                "text": "Though my problems are meaningless, that don't make them go away",
+                "images": [],
+                "published_at": "2019-01-01 00:00:00",
+                "publish": true,
+            },
+             "_links": {
+                "self": { "href": "/v1/blogs/3" }
+            },
+        }
+
+### Update a blog [PUT]
+
++ Request (application/json)
+
+        {
+            "data": {   
+                "title": "I changed the title!",
+            }
+        }
+
++ Response 200 (application/hal+json)
+
+        {
+            "data": {   
+                "id": 3,
+                "title": "I changed the title!",
+                "text": "Though my problems are meaningless, that don't make them go away",
+                "images": [],
+                "published_at": "2019-01-01 00:00:00",
+                "publish": true,
+            },
+             "_links": {
+                "self": { "href": "/v1/blogs/3" }
+            },
+        }
+
+## Comment collection [/comment]
+
+### Create a New Comment [POST]
+
+You may create a comment for a blog using this action. It takes a JSON
+object containing a post.
+
++ Request (application/json)
+
+        {
+            "data": {   
+                "author": "Arnold",
+                "blog_post": 3,
+                "text": "Get to the choppa",
+            }
+        }
+
++ Response 201 (application/hal+json)
+
+    + Headers
+
+            Location: /v1/comments/1
+
+    + Body
+
+            {
+                "data": {
+                    "id": 1,
+                    "author": "Arnold",
+                    "blog_post": 3,
+                    "text": "I agree. Get to the choppa",
+                    "date": "2019-01-02 00:00:00",
+                },
+                "_links": {
+                    "self": { "href": "/v1/comments/1" }
+                },
+            }
+
+## Comment [/comment/{comment_id}]
+
+A Comment object has the following attributes:
+
++ author 
++ blog_post - ID of the blog in the form of an interger
++ text
++ date - An ISO8601 date when the comment was made.
+
++ Parameters
+    + comment_id: 1 (required, number) - ID of the comment in the form of an integer
+
+### Get a comment [GET]
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": 1,
+                "author": "Arnold",
+                "blog_post": 3,
+                "text": "Get to the choppa",
+                "date": "2019-01-02 00:00:00",
+            }
+        }
+
+### Update a comment [PUT]
+
++ Request (application/hal+json)
+
+        {
+            "data": {   
+                "text": "I disagree. I'm a cop you idiot!",
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+           "data": {
+                "id": 1,
+                "author": "Arnold",
+                "blog_post": 3,
+                "text": "I disagree. I'm a cop you idiot!",
+                "date": "2019-01-02 00:00:00",}
+            },
+            "_links": {
+                "self": { "href": "/v1/comments/1" }
+            },
+        }
