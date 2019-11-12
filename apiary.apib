@@ -13,11 +13,11 @@ It is recommend to follow the “url” link values, [Link](https://tools.ietf.o
 
 ## Retrieve the Entry Point [GET]
 
-+ Response 200 (application/hal+json)
++ Response 200 (application/json)
 
         {
             "_links": {
-                "blogs": { "href": "/blogs" }
+                "blogs": { "href": "/api/v1/blogs/" }
             }
         }
 
@@ -26,14 +26,14 @@ It is recommend to follow the “url” link values, [Link](https://tools.ietf.o
 
 Resources related to a blog in the API
 
-## Blog Collection [/blogs/{?page}]
+## Blog Collection [/api/v1/blogs/{?page}]
 
 + Parameters
     + page: 1 (optional, number) - The page of blogs to return
 
 ### List All Blogs [GET]
 
-+ Response 200 (application/hal+json)
++ Response 200 (content-type: application/json)
 
         {
             "_embedded": {
@@ -48,7 +48,7 @@ Resources related to a blog in the API
                             "publish": true,
                         },
                         "_links": {
-                            "self": { "self": "/v1/blogs/1" }
+                            "self": { "self": "/api/v1/blogs/1" }
                         },
                     },
                     {
@@ -61,14 +61,14 @@ Resources related to a blog in the API
                             "publish": true,
                         },
                         "_links": {
-                            "self": { "self": "/v1/blogs/2" }
+                            "self": { "self": "/api/v1/blogs/2" }
                         },
                     },
                 ]
             },
              "_links": {
-                "self": { "href": "/v1/blogs/" },
-                "next": { "href": "/v1/blogs/?page=2" }
+                "self": { "href": "/api/v1/blogs/" },
+                "next": { "href": "/api/v1/blogs/?page=2" }
             },
         ]
 
@@ -89,11 +89,11 @@ object containing a post.
             }
         }
 
-+ Response 201 (application/hal+json)
++ Response 201 (application/json)
 
     + Headers
 
-            Location: /v1/blogs/3
+            Location: /api/v1/blogs/3
 
     + Body
 
@@ -107,7 +107,7 @@ object containing a post.
                     "publish": true,
                 },
                 "_links": {
-                    "self": { "href": "/v1/blogs/3" }
+                    "self": { "href": "/api/v1/blogs/3" }
                 },
             }
 
@@ -127,7 +127,7 @@ A Blog object has the following attributes:
 
 ### Get a blog [GET]
 
-+ Response 200 (application/hal+json)
++ Response 200 (application/json)
 
         {
             "data": {   
@@ -139,7 +139,7 @@ A Blog object has the following attributes:
                 "publish": true,
             },
              "_links": {
-                "self": { "href": "/v1/blogs/3" }
+                "self": { "href": "/api/v1/blogs/3" }
             },
         }
 
@@ -153,7 +153,7 @@ A Blog object has the following attributes:
             }
         }
 
-+ Response 200 (application/hal+json)
++ Response 200 (application/json)
 
         {
             "data": {   
@@ -165,11 +165,11 @@ A Blog object has the following attributes:
                 "publish": true,
             },
              "_links": {
-                "self": { "href": "/v1/blogs/3" }
+                "self": { "href": "/api/v1/blogs/3" }
             },
         }
 
-## Comment collection [/comment]
+## Comment collection [/api/v1/comment]
 
 ### Create a New Comment [POST]
 
@@ -186,11 +186,11 @@ object containing a post.
             }
         }
 
-+ Response 201 (application/hal+json)
++ Response 201 (application/json)
 
     + Headers
 
-            Location: /v1/comments/1
+            Location: /api/v1/comments/1
 
     + Body
 
@@ -203,11 +203,11 @@ object containing a post.
                     "date": "2019-01-02 00:00:00",
                 },
                 "_links": {
-                    "self": { "href": "/v1/comments/1" }
+                    "self": { "href": "/api/v1/comments/1" }
                 },
             }
 
-## Comment [/comment/{comment_id}]
+## Comment [/api/v1/comment/{comment_id}]
 
 A Comment object has the following attributes:
 
@@ -235,7 +235,7 @@ A Comment object has the following attributes:
 
 ### Update a comment [PUT]
 
-+ Request (application/hal+json)
++ Request (application/json)
 
         {
             "data": {   
@@ -254,6 +254,6 @@ A Comment object has the following attributes:
                 "date": "2019-01-02 00:00:00",}
             },
             "_links": {
-                "self": { "href": "/v1/comments/1" }
+                "self": { "href": "/api/v1/comments/1" }
             },
         }
